@@ -1,5 +1,14 @@
 const mix = require('laravel-mix');
 
+mix.options({
+  hmrOptions: {
+    host: 'lottery.test',
+    port: 8080
+  }
+});
+
+mix.browserSync('lottery.test');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -12,12 +21,13 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js').vue()
-    .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-    ])
-    .webpackConfig(require('./webpack.config'));
+  .postCss('resources/css/app.css', 'public/css', [
+    require('postcss-import'),
+    require('tailwindcss'),
+  ])
+  .sass('resources/sass/toastr.scss', 'public/css')
+  .webpackConfig(require('./webpack.config')).sourceMaps();
 
 if (mix.inProduction()) {
-    mix.version();
+  mix.version();
 }
