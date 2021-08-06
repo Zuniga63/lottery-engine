@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,5 +40,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     ->whereNumber('id')
     ->name('users.destroy');
 
-  
+  //Rutas para la administración de vendedores
+  Route::get('/vendedores', [SellerController::class, 'index'])->name('sellers.index');
 });

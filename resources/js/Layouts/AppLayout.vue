@@ -458,6 +458,7 @@ export default {
       links: [
         {name: 'Panel', route: 'dashboard'},
         {name: 'Usuarios', route: 'users.index'},
+        {name: 'Vendedores', route: 'sellers.index'},
       ],
     };
   },
