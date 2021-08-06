@@ -20,7 +20,7 @@ class CreateLotteryTicketTable extends Migration
       $table->string('fisrt_option', 3);
       $table->string('second_option', 3);
       $table->unique(['fisrt_option', 'second_option']);
-      $table->timestamp('paymen_date')->nullable();
+      $table->timestamp('payment_date')->nullable();
       $table->timestamps();
     });
   }
