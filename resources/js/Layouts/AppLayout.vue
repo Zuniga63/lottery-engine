@@ -456,7 +456,8 @@ export default {
     return {
       showingNavigationDropdown: false,
       links: [
-        {name: 'Panel', route: 'dashboard'}
+        {name: 'Panel', route: 'dashboard'},
+        {name: 'Usuarios', route: 'users.index'},
       ],
     };
   },

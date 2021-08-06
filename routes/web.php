@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,13 +26,18 @@ Route::redirect('/', '/dashboard', 301);
 //     ]);
 // });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
   //DASHBOARD
-  Route::get('/dashboard', function(){
+  Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
   })->name('dashboard');
-});
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->name('dashboard');
+  // RUTAS PARA LA ADMINISTRACIÓN DE USUARIOS
+  Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+  Route::post('/usuarios', [UserController::class, 'store'])->name('users.store');
+  Route::delete('/usuarios/{id}', [UserController::class, 'destroy'])
+    ->whereNumber('id')
+    ->name('users.destroy');
+
+  
+});
