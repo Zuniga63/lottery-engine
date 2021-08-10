@@ -31,7 +31,8 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
-        "gulp": "^4.0.2",
+        "dayjs": "^1.10.6",
+        "sweetalert2": "^11.1.2",
         "toastr": "^2.1.4"
     }
 }

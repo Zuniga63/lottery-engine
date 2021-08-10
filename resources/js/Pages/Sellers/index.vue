@@ -7,7 +7,7 @@
     </template>
 
     <div class="grid grid-cols-8 px-4">
-      <div class="relative col-span-2 lg:none" ></div>
+      <div class="relative col-span-2 lg:none"></div>
 
       <div class="col-span-8 lg:col-span-8">
         <!--  Tabla de Usuarios -->
@@ -46,21 +46,6 @@
                       >
                         Nombres
                       </th>
-                      <!-- Apellidos -->
-                      <th
-                        scope="col"
-                        class="
-                          px-6
-                          py-3
-                          text-left text-xs
-                          font-medium
-                          text-gray-500
-                          uppercase
-                          tracking-wider
-                        "
-                      >
-                        Apellidos
-                      </th>
                       <!-- Boletos -->
                       <th
                         scope="col"
@@ -74,7 +59,21 @@
                           tracking-wider
                         "
                       >
-                        Boletos
+                        Vendidos
+                      </th>
+                      <th
+                        scope="col"
+                        class="
+                          px-6
+                          py-3
+                          text-center text-xs
+                          font-medium
+                          text-gray-500
+                          uppercase
+                          tracking-wider
+                        "
+                      >
+                        Pagados
                       </th>
                       <!-- Importe -->
                       <th
@@ -104,11 +103,21 @@
                           tracking-wider
                         "
                       >
-                        Recaudo
+                        Recaudado
                       </th>
-                      <!-- Actions -->
-                      <th scope="col" class="relative px-6 py-3">
-                        <span class="sr-only">Edit</span>
+                      <th
+                        scope="col"
+                        class="
+                          px-6
+                          py-3
+                          text-center text-xs
+                          font-medium
+                          text-gray-500
+                          uppercase
+                          tracking-wider
+                        "
+                      >
+                        Saldo
                       </th>
                     </tr>
                   </thead>
@@ -117,19 +126,19 @@
                       <!-- NOMBRES -->
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">
-                          {{ seller.firstName }}
-                        </div>
-                      </td>
-                      <!-- APELLIDOS -->
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                          {{ seller.lastName }}
+                          {{ seller.firstName }} {{ seller.lastName }}
                         </div>
                       </td>
                       <!-- boletos -->
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900 text-center">
                           {{ seller.tickets }}
+                        </div>
+                      </td>
+                      <!-- Pagados -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-center">
+                          {{ seller.ticketsPay }}
                         </div>
                       </td>
                       <!-- importe -->
@@ -142,18 +151,57 @@
                       <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900 text-right">
                           {{ formatCurrency(seller.collect) }}
+                          <span class="ml-2 text-xs text-gray-400"
+                            >{{ seller.collectPercentage }}%</span
+                          >
                         </div>
                       </td>
 
-                      <td
-                        class="
-                          px-6
-                          py-4
-                          whitespace-nowrap
-                          text-right text-sm
-                          font-medium
-                        "
-                      ></td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-right">
+                          {{ formatCurrency(seller.balance) }}
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- RESUME -->
+                    <tr class="bg-gray-100">
+                      <!-- NOMBRES -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">Total</div>
+                      </td>
+                      <!-- boletos -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-center">
+                          {{ totalTickets }}
+                        </div>
+                      </td>
+                      <!-- Pagados -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-center">
+                          {{ totalTicketsPay }}
+                        </div>
+                      </td>
+                      <!-- importe -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-right">
+                          {{ formatCurrency(totalAmount) }}
+                        </div>
+                      </td>
+                      <!-- RECAUDO -->
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-right">
+                          {{ formatCurrency(totalCollect) }}
+                          <span class="ml-2 text-xs text-gray-400"
+                            >{{ totalCollectPercentage }}%</span
+                          >
+                        </div>
+                      </td>
+
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 text-right">
+                          {{ formatCurrency(totalBalance) }}
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -183,19 +231,42 @@ export default {
   data() {
     return {
       sellers: [],
+      totalTickets: 0,
+      totalTicketsPay: 0,
+      totalAmount: 0,
+      totalCollect: 0,
+      totalCollectPercentage: 0,
+      totalBalance: 0,
     };
   },
   beforeMount() {
     this.allSellers.forEach((seller) => {
+      let amount = seller.tickets_count * 5e4;
+      let collect = seller.payments_sum_amount ? parseFloat(seller.payments_sum_amount) : 0;
+      let balance = amount - collect;
+      let collectPercentage = amount ? _.round((collect / amount) * 100, 2) : 0;
       this.sellers.push({
         id: seller.id,
         firstName: seller.first_name,
         lastName: seller.last_name,
         tickets: seller.tickets_count,
-        amount: seller.tickets_count * 5e4,
-        collect: seller.payments_sum_amount ? seller.payments_sum_amount : 0,
+        ticketsPay: seller.tickets_pay,
+        amount,
+        collect,
+        collectPercentage,
+        balance,
       });
+
+      this.totalTickets += seller.tickets_count;
+      this.totalTicketsPay += seller.tickets_pay;
+      this.totalAmount += amount;
+      this.totalCollect += collect;
+      this.totalBalance += balance;
     });
+
+    this.totalCollectPercentage = this.totalAmount
+      ? _.round((this.totalCollect / this.totalAmount) * 100, 2)
+      : 0;
   },
   methods: {
     formatCurrency,

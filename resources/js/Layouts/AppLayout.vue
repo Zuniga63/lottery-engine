@@ -459,6 +459,8 @@ export default {
         {name: 'Panel', route: 'dashboard'},
         {name: 'Usuarios', route: 'users.index'},
         {name: 'Vendedores', route: 'sellers.index'},
+        {name: 'Clientes', route: 'customers.index'},
+        {name: 'Boletos', route: 'tickets.index'},
       ],
     };
   },

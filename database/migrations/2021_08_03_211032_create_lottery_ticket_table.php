@@ -17,9 +17,8 @@ class CreateLotteryTicketTable extends Migration
       $table->id();
       $table->foreignId('seller_id')->constrained('seller');
       $table->foreignId('customer_id')->constrained('customer');
-      $table->string('fisrt_option', 3);
-      $table->string('second_option', 3);
-      $table->unique(['fisrt_option', 'second_option']);
+      $table->string('first_option', 3)->unique();
+      $table->string('second_option', 3)->unique();
       $table->timestamp('payment_date')->nullable();
       $table->timestamps();
     });

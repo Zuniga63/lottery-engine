@@ -16,4 +16,9 @@ class Customer extends Model
   {
     return $this->hasMany(LotteryTicket::class);
   }
+
+  public function payments()
+  {
+    return $this->hasMany(LotteryTicketPayment::class);
+  }
 }

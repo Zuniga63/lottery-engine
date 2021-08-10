@@ -9,7 +9,7 @@ class LotteryTicket extends Model
 {
   use HasFactory;
   protected $table = 'lottery_ticket';
-  protected $fillable = ['first_option', 'second_option', 'payment_date'];
+  protected $fillable = ['seller_id', 'customer_id', 'first_option', 'second_option', 'payment_date'];
   protected $guarded = ['id'];
 
   public function payments()

@@ -17,6 +17,7 @@ class SellerSeeder extends Seeder
   {
     $sellers = [
       ['first_name' => 'Omaira', 'last_name' => 'Hoyos Vega'],
+      ['first_name' => 'María Daniela', 'last_name' => 'Toncel Hoyos'],
       ['first_name' => 'Arelis María', 'last_name' => 'Hoyos Vega'],
       ['first_name' => 'Liz Daris', 'last_name' => 'Hoyos Vega'],
       ['first_name' => 'Jorge Eliecer', 'last_name' => 'Hoyos Vega'],

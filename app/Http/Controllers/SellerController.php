@@ -18,7 +18,10 @@ class SellerController extends Controller
     /** @var Seller */
     $allSellers = Seller::orderBy('first_name')
       ->orderBy('last_name')
-      ->withCount(['tickets'])
+      ->withCount([
+        'tickets',
+        'tickets as tickets_pay' => function($query) { $query->whereNotNull('payment_date'); }
+      ])
       ->withSum('payments', 'amount')
       ->get();
       
